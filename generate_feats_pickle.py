@@ -14,6 +14,9 @@ def parse_args():
     parser.add_argument('--dataset', type=str,
                         default='train', choices=['train', 'valid', 'test'],
                         help='Dataset to generate pickle of features. (default: %(default)s)')
+    parser.add_argument('--output_dir', type=str,
+                        default='./out',
+                        help='Directory path to the outputs. (default: %(default)s)')
     parser.add_argument('--temp_avg', action='store_true',
                         help='Boolean flag activating temporal averaging of features. (default: False)')
     parser.add_argument('--sample', action='store_true',
@@ -42,6 +45,8 @@ def parse_args():
     elif args.dataset == "test":
         path = "./nsynth-test.jsonwav.tar/nsynth-test"
     
+    maybe_make_directory(args.output_dir)
+
     return args, path
 
 args, path = parse_args()
@@ -49,8 +54,7 @@ args, path = parse_args()
 os.chdir("/mnt/d/IFT6390_NSynth_data")
 
 AUDIO_FILEPATH = "./audio/"
-OUT_DIR = "out"
-maybe_make_directory(OUT_DIR)
+
 
 def mfcc(df_features):
     mfcc = pd.DataFrame(df_features.mfcc.values.tolist(),
@@ -108,10 +112,10 @@ class NSynthFeatureExtractor(object):
 
     def dump(self, df_features):
         if self.temporal_averaging:
-            with open(os.path.join(OUT_DIR, 'df_features_' + args.dataset + '.pickle'), 'wb') as f:
+            with open(os.path.join(args.output_dir, 'df_features_' + args.dataset + '.pickle'), 'wb') as f:
                 pickle.dump(df_features, f)
         else:
-            with open(os.path.join(OUT_DIR, 'df_features_' + args.dataset + '_all_features.pickle'), 'wb') as f:
+            with open(os.path.join(args.output_dir, 'df_features_' + args.dataset + '_all_features.pickle'), 'wb') as f:
                 pickle.dump(df_features, f)
 
 
@@ -119,22 +123,14 @@ nsynthfe = NSynthFeatureExtractor(path, temporal_averaging=args.temp_avg)
 
 df_examples_json = pd.read_json(path_or_buf=os.path.join(path, 'examples.json'), orient='index')
 
-####
 
 if args.dataset == "train" and args.sample:
-    n_class_train = df_examples_json['instrument_family'].value_counts(ascending=True)
     df_examples_json = df_examples_json.groupby('instrument_family', as_index=False,
                                 group_keys=False).apply(lambda df: df.sample(args.n_samples, random_state=0))
 
-    #split_option = False
-    #if split_option == True:
-    #    dfs = np.vsplit(df_examples_json, 4)
-    #    df_examples_json = dfs[3]
-####
-
 filenames_examples = df_examples_json.index.tolist()
 
-with open(os.path.join(OUT_DIR, 'filenames_' + args.dataset + '.pickle'), 'wb') as f:
+with open(os.path.join(args.output_dir, 'filenames_' + args.dataset + '.pickle'), 'wb') as f:
     pickle.dump(filenames_examples, f)
 
 df_features = nsynthfe.extract(filenames_examples)
