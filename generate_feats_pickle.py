@@ -49,7 +49,7 @@ def parse_args():
 args = parse_args()
 
 DATASET_PATH = args.data_path
-AUDIO_FILEPATH = "./audio/"
+AUDIO_FILEPATH = "audio"
 
 def mfcc(df_features):
     mfcc = pd.DataFrame(df_features.mfcc.values.tolist(),
