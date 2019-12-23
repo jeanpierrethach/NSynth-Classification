@@ -14,7 +14,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str,
                         required=True, choices=['train', 'valid', 'test'],
-                        help='Dataset to generate pickle of features. (required) (default: %(default)s)')
+                        help='Dataset to load the filenames pickle. (required) (default: %(default)s)')
     parser.add_argument('--data_path', type=str,
                         required=True,
                         help='Directory path to the datasets. (required) (default: %(default)s)')

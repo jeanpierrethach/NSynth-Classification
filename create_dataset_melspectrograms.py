@@ -21,7 +21,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str,
                         required=True, choices=['train', 'valid', 'test'],
-                        help='Dataset to generate pickle of features. (required) (default: %(default)s)')
+                        help='Dataset to load melspectrograms and save as a npy. (required) (default: %(default)s)')
     parser.add_argument('--resize', action='store_true',
                         help='Boolean flag activating resize of melspectrograms (default: False)')
     parser.add_argument('--size', type=_size, nargs=1,
