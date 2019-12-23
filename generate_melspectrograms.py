@@ -48,7 +48,7 @@ AUDIO_FILEPATH = "./audio/"
 
 FILENAMES_PICKLE_PATH = os.path.join(args.input_dir, f'filenames_{args.dataset}.pickle')
 
-with open(FILENAMES_PICKLE_PATH, 'wb') as f:
+with open(FILENAMES_PICKLE_PATH, 'rb') as f:
 	filenames_examples = pickle.load(f)
 
 for idx, filename in enumerate(filenames_examples):
