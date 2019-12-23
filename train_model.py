@@ -105,7 +105,7 @@ timestr = time.strftime("%Y%m%d-%H%M%S")
 model_name = f'keras_nsynth_{timestr}.h5'
 model_path = os.path.join(args.model_dir, model_name)
 model.save(model_path)
-print('Saved trained model at %s ' % model_path)
+print(f'Saved trained model at {model_path}')
 
 write_metadata(os.path.join(args.model_dir, f'{args.meta_name}_{timestr}.txt'), model_name, args)
 
