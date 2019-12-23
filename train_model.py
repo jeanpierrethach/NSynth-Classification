@@ -12,7 +12,7 @@ from keras.models import Sequential
 from keras.callbacks import EarlyStopping
 from keras.utils import to_categorical
 
-from utils import maybe_make_directory
+from utils import maybe_make_directory, write_metadata
 
 def parse_args():
 	parser = argparse.ArgumentParser()
@@ -34,6 +34,9 @@ def parse_args():
 	parser.add_argument('--learning_rate', type=float,
 						default=1e-4,
 						help='Learning rate parameter for the Adam optimizer. (default: %(default)s)')
+	parser.add_argument('--meta_name', type=str,
+                        default='meta_data',
+                        help='Configuration file output')
 
 	args = parser.parse_args()
 	maybe_make_directory(args.input_dir)
@@ -99,11 +102,12 @@ history = model.fit(X_train, y_train,
 
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
-
 model_name = 'keras_nsynth_' + timestr + '.h5'
 model_path = os.path.join(args.model_dir, model_name)
 model.save(model_path)
 print('Saved trained model at %s ' % model_path)
+
+write_metadata(os.path.join(args.model_dir, args.meta_name + '_' + timestr + '_.txt'), model_name, args)
 
 print(history.history.keys())
 

@@ -81,3 +81,10 @@ def plot_confusion_matrix(y_true, y_pred, classes,
                     color="white" if cm[i, j] > thresh else "black")
     #fig.tight_layout()
     return ax
+
+def write_metadata(path, model_name, args):
+    with open(path, 'w') as f:
+        f.write(f'model_name: {model_name}\n')
+        f.write(f'epochs: {args.epochs}\n')
+        f.write(f'batch_size: {args.batch_size}\n')
+        f.write(f'learning_rate: {args.learning_rate}\n')
