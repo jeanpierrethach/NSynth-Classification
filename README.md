@@ -48,7 +48,7 @@ python3 generate_melspectrograms.py --dataset train --data_path /nsynth-train.js
 ```
 
 #### Arguments
-* `--dataset` : Dataset to generate pickle of features. *Choices*: `{train,valid,test}` **(required)** *Default*: `None`
+* `--dataset` : Dataset to load the filenames pickle. *Choices*: `{train,valid,test}` **(required)** *Default*: `None`
 * `--data_path`: Directory path to the datasets. **(required)** *Default*: `None`
 * `--input_dir`: Directory path to the pickle files. *Default*: `./out`
 * `--output_dir`: Directory path to the melspectrograms output. *Default*: `./melspec`
@@ -66,7 +66,7 @@ python3 create_dataset_melspectrograms.py --dataset train --verbose --resize --s
 ```
 
 #### Arguments
-* `--dataset` : Dataset to generate pickle of features. *Choices*: `{train,valid,test}` **(required)** *Default*: `None`
+* `--dataset` : Dataset to load melspectrograms and save as a npy. *Choices*: `{train,valid,test}` **(required)** *Default*: `None`
 * `--resize`: Boolean flag activating resize of melspectrograms. *Default*: `False`
 * `--size`: Size must be height,width.  *Default*: `32,32`
 * `--input_dir`: Directory path to the melspectrograms. *Default*: `./melspec`
