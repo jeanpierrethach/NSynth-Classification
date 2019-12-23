@@ -12,58 +12,58 @@ from keras.utils import to_categorical
 from utils import instrument_code, maybe_make_directory
 
 def _size(s):
-	try:
-		return tuple(map(int, s.split(',')))
-	except:
-		raise argparse.ArgumentTypeError("Size must be height,width")
+    try:
+        return tuple(map(int, s.split(',')))
+    except:
+        raise argparse.ArgumentTypeError("Size must be height,width")
 
 def parse_args():
-	parser = argparse.ArgumentParser()
-	parser.add_argument('--dataset', type=str,
-						required=True, choices=['train', 'valid', 'test'],
-						help='Dataset to generate pickle of features. (required) (default: %(default)s)')
-	parser.add_argument('--resize', action='store_true',
-						help='Boolean flag activating resize of melspectrograms (default: False)')
-	parser.add_argument('--size', type=_size, nargs=1,
-						default='32,32',
-						help='Size must be height,width (default: (%(default)s))')
-	parser.add_argument('--input_dir', type=str,
-						default='./melspec',
-						help='Directory path to the melspectrograms. (default: %(default)s)')
-	parser.add_argument('--output_dir', type=str,
-						default='./out',
-						help='Directory path to the outputs. (default: %(default)s)')
-	parser.add_argument('--verbose', action='store_true',
-						help='Boolean flag activating console prints (default: False)')
-	args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dataset', type=str,
+                        required=True, choices=['train', 'valid', 'test'],
+                        help='Dataset to generate pickle of features. (required) (default: %(default)s)')
+    parser.add_argument('--resize', action='store_true',
+                        help='Boolean flag activating resize of melspectrograms (default: False)')
+    parser.add_argument('--size', type=_size, nargs=1,
+                        default='32,32',
+                        help='Size must be height,width (default: (%(default)s))')
+    parser.add_argument('--input_dir', type=str,
+                        default='./melspec',
+                        help='Directory path to the melspectrograms. (default: %(default)s)')
+    parser.add_argument('--output_dir', type=str,
+                        default='./out',
+                        help='Directory path to the outputs. (default: %(default)s)')
+    parser.add_argument('--verbose', action='store_true',
+                        help='Boolean flag activating console prints (default: False)')
+    args = parser.parse_args()
 
-	maybe_make_directory(args.output_dir)
+    maybe_make_directory(args.output_dir)
 
-	return args
+    return args
 
 args = parse_args()
 
 def load_image(filename, resize=False):
-	img = Image.open(filename)
-	img.load()
-	if args.resize:
-		img.thumbnail(args.size[0], Image.ANTIALIAS)
-		if args.verbose:
-			print(f"Resizing melspectrogram to : {img.size} with PIL.IMAGE.ANTIALIAS")
-	data = np.asarray(img, dtype=np.float32)
-	return data
+    img = Image.open(filename)
+    img.load()
+    if args.resize:
+        img.thumbnail(args.size[0], Image.ANTIALIAS)
+        if args.verbose:
+            print(f"Resizing melspectrogram to : {img.size} with PIL.IMAGE.ANTIALIAS")
+    data = np.asarray(img, dtype=np.float32)
+    return data
 
 def read_melspectrograms():
-	mel_spectrograms = []
-	labels = []
-	melspec_path = os.path.join(args.input_dir, args.dataset, "*.png")
-	for im_path in glob.glob(melspec_path):
-		if args.verbose:
-			print(im_path)
-		im = load_image(im_path, resize=True)
-		mel_spectrograms.append(im)
-		labels.append(instrument_code(im_path.split(os.sep)[3]))
-	return mel_spectrograms, labels
+    mel_spectrograms = []
+    labels = []
+    melspec_path = os.path.join(args.input_dir, args.dataset, "*.png")
+    for im_path in glob.glob(melspec_path):
+        if args.verbose:
+            print(im_path)
+        im = load_image(im_path, resize=True)
+        mel_spectrograms.append(im)
+        labels.append(instrument_code(im_path.split(os.sep)[3]))
+    return mel_spectrograms, labels
 
 mel_spectrograms, labels = read_melspectrograms()
 

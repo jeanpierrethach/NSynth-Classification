@@ -64,9 +64,9 @@ def feature_extract_flatten(file, n_mfcc, n_mels, fmax):
 
 def extract_mel_spectrogram(file, n_mels, hop_length, fmax):
     # get wave representation
-	y, sr = librosa.load(file)
+    y, sr = librosa.load(file)
 
-	# get the mel-scaled spectrogram
-	spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=n_mels, hop_length=hop_length, fmax=fmax)
+    # get the mel-scaled spectrogram
+    spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=n_mels, hop_length=hop_length, fmax=fmax)
 
-	return spectrogram
+    return spectrogram

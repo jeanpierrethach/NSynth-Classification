@@ -15,34 +15,34 @@ from keras.utils import to_categorical
 from utils import maybe_make_directory, write_metadata
 
 def parse_args():
-	parser = argparse.ArgumentParser()
-	parser.add_argument('--input_dir', type=str,
-						default='./out',
-						help='Directory path to the npy files. (default: %(default)s)')
-	parser.add_argument('--model_dir', type=str,
-						default='./models',
-						help='Directory path to the model output. (default: %(default)s)')
-	parser.add_argument('--graph_dir', type=str,
-						default='./graphs',
-						help='Directory path to the graphs output. (default: %(default)s)')
-	parser.add_argument('--epochs', type=int,
-						default=30,
-						help='Number of epochs. (default: %(default)s)')
-	parser.add_argument('--batch_size', type=int,
-						default=32,
-						help='Batch size. (default: %(default)s)')
-	parser.add_argument('--learning_rate', type=float,
-						default=1e-4,
-						help='Learning rate parameter for the Adam optimizer. (default: %(default)s)')
-	parser.add_argument('--meta_name', type=str,
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input_dir', type=str,
+                        default='./out',
+                        help='Directory path to the npy files. (default: %(default)s)')
+    parser.add_argument('--model_dir', type=str,
+                        default='./models',
+                        help='Directory path to the model output. (default: %(default)s)')
+    parser.add_argument('--graph_dir', type=str,
+                        default='./graphs',
+                        help='Directory path to the graphs output. (default: %(default)s)')
+    parser.add_argument('--epochs', type=int,
+                        default=30,
+                        help='Number of epochs. (default: %(default)s)')
+    parser.add_argument('--batch_size', type=int,
+                        default=32,
+                        help='Batch size. (default: %(default)s)')
+    parser.add_argument('--learning_rate', type=float,
+                        default=1e-4,
+                        help='Learning rate parameter for the Adam optimizer. (default: %(default)s)')
+    parser.add_argument('--meta_name', type=str,
                         default='meta_data',
                         help='Configuration file output. (default: %(default)s)')
 
-	args = parser.parse_args()
-	maybe_make_directory(args.input_dir)
-	maybe_make_directory(args.model_dir)
-	maybe_make_directory(args.graph_dir)
-	return args
+    args = parser.parse_args()
+    maybe_make_directory(args.input_dir)
+    maybe_make_directory(args.model_dir)
+    maybe_make_directory(args.graph_dir)
+    return args
 
 args = parse_args()
 
@@ -58,8 +58,7 @@ print(X_valid.shape)
 num_classes = 11
 
 model = Sequential()
-model.add(Conv2D(64, (3, 3), padding='same',
-				 input_shape=(X_train.shape[1:])))
+model.add(Conv2D(64, (3, 3), padding='same', input_shape=(X_train.shape[1:])))
 model.add(Activation('relu'))
 model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
@@ -85,19 +84,19 @@ print(model.summary())
 opt = keras.optimizers.Adam(lr=args.learning_rate)
 
 model.compile(loss='categorical_crossentropy',
-			  optimizer=opt,
-			  metrics=['accuracy'])
+              optimizer=opt,
+              metrics=['accuracy'])
 
 early_stopping = [keras.callbacks.EarlyStopping(monitor='val_loss',
-							  min_delta=0,
-							  patience=2,
-							  verbose=0, mode='auto')]
+                              min_delta=0,
+                              patience=2,
+                              verbose=0, mode='auto')]
 
 history = model.fit(X_train, y_train,
-		  batch_size=args.batch_size,
-		  epochs=args.epochs,
-		  validation_data=(X_valid, y_valid),
-		  shuffle=True, callbacks=early_stopping, verbose=1)
+          batch_size=args.batch_size,
+          epochs=args.epochs,
+          validation_data=(X_valid, y_valid),
+          shuffle=True, callbacks=early_stopping, verbose=1)
 
 
 timestr = time.strftime("%Y%m%d-%H%M%S")
