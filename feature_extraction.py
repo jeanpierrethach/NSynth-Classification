@@ -19,7 +19,7 @@ def feature_extract(file, n_mfcc, n_mels, fmax):
     # Mel-frequency cepstral coefficients (MFCCs)
     mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc)
     # temporal averaging
-    mfcc=np.mean(mfcc, axis=1)
+    mfcc = np.mean(mfcc, axis=1)
     
     # get the mel-scaled spectrogram
     spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=n_mels, fmax=fmax)  

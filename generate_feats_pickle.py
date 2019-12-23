@@ -12,8 +12,11 @@ from feature_extraction import feature_extract, feature_extract_flatten
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str,
-                        default='train', choices=['train', 'valid', 'test'],
-                        help='Dataset to generate pickle of features. (default: %(default)s)')
+                        required=True, choices=['train', 'valid', 'test'],
+                        help='Dataset to generate pickle of features. (required) (default: %(default)s)')
+    parser.add_argument('--data_path', type=str,
+                        required=True,
+                        help='Directory path to the datasets. (required) (default: %(default)s)')
     parser.add_argument('--output_dir', type=str,
                         default='./out',
                         help='Directory path to the outputs. (default: %(default)s)')
@@ -38,23 +41,15 @@ def parse_args():
                         help='Number of samples between successive frames. (default: %(default)s)')
     
     args = parser.parse_args()
-    if args.dataset == "train":
-        path = "./nsynth-train.jsonwav.tar/nsynth-train"
-    elif args.dataset == "valid":
-        path = "./nsynth-valid.jsonwav.tar/nsynth-valid"
-    elif args.dataset == "test":
-        path = "./nsynth-test.jsonwav.tar/nsynth-test"
     
     maybe_make_directory(args.output_dir)
 
-    return args, path
+    return args
 
-args, path = parse_args()
+args = parse_args()
 
-os.chdir("/mnt/d/IFT6390_NSynth_data")
-
+DATASET_PATH = args.data_path
 AUDIO_FILEPATH = "./audio/"
-
 
 def mfcc(df_features):
     mfcc = pd.DataFrame(df_features.mfcc.values.tolist(),
@@ -77,7 +72,7 @@ def contrast(df_features):
     return contrast.add_prefix('contrast_')
 
 class NSynthFeatureExtractor(object):
-    def __init__(self, path, temporal_averaging=False):
+    def __init__(self, temporal_averaging=False):
         self.DEFAULT_FEATURES = [mfcc, spectrogram, chroma, contrast]
         self.temporal_averaging = temporal_averaging
 
@@ -85,10 +80,10 @@ class NSynthFeatureExtractor(object):
         dict_feats = {}
         for filename in filenames:
             if self.temporal_averaging:
-                features = feature_extract(os.path.join(path, AUDIO_FILEPATH, filename + '.wav'), n_mfcc=args.n_mfcc, n_mels=args.n_mels, fmax=args.fmax)
+                features = feature_extract(os.path.join(DATASET_PATH, AUDIO_FILEPATH, filename + '.wav'), n_mfcc=args.n_mfcc, n_mels=args.n_mels, fmax=args.fmax)
                 dict_feats[filename] = features
             else:
-                features = feature_extract_flatten(os.path.join(path, AUDIO_FILEPATH, filename + '.wav'), n_mfcc=args.n_mfcc, n_mels=args.n_mels, fmax=args.fmax)
+                features = feature_extract_flatten(os.path.join(DATASET_PATH, AUDIO_FILEPATH, filename + '.wav'), n_mfcc=args.n_mfcc, n_mels=args.n_mels, fmax=args.fmax)
                 dict_feats[filename] = features                
 
         df_features = pd.DataFrame.from_dict(dict_feats, orient='index',
@@ -119,10 +114,9 @@ class NSynthFeatureExtractor(object):
                 pickle.dump(df_features, f)
 
 
-nsynthfe = NSynthFeatureExtractor(path, temporal_averaging=args.temp_avg)
+nsynthfe = NSynthFeatureExtractor(temporal_averaging=args.temp_avg)
 
-df_examples_json = pd.read_json(path_or_buf=os.path.join(path, 'examples.json'), orient='index')
-
+df_examples_json = pd.read_json(path_or_buf=os.path.join(DATASET_PATH, 'examples.json'), orient='index')
 
 if args.dataset == "train" and args.sample:
     df_examples_json = df_examples_json.groupby('instrument_family', as_index=False,
