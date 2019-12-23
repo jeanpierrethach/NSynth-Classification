@@ -23,7 +23,7 @@ def parse_args():
     parser.add_argument('--temp_avg', action='store_true',
                         help='Boolean flag activating temporal averaging of features. (default: False)')
     parser.add_argument('--sample', action='store_true',
-                        help='Boolean flag activating sampling of training set')
+                        help='Boolean flag activating sampling of training set. (default: False)')
     parser.add_argument('--n_samples', type=int,
                         default=5000,
                         help='Number of samples to take from each instrument family. (default: %(default)s)')
