@@ -36,7 +36,7 @@ def parse_args():
 						help='Learning rate parameter for the Adam optimizer. (default: %(default)s)')
 	parser.add_argument('--meta_name', type=str,
                         default='meta_data',
-                        help='Configuration file output')
+                        help='Configuration file output. (default: %(default)s)')
 
 	args = parser.parse_args()
 	maybe_make_directory(args.input_dir)
@@ -46,11 +46,11 @@ def parse_args():
 
 args = parse_args()
 
-X_train = np.load(os.path.join(args.input_dir, "train_spectro.npy"))
-y_train = np.load(os.path.join(args.input_dir, "train_spectro_labels.npy"))
+X_train = np.load(os.path.join(args.input_dir, "train_melspectro.npy"))
+y_train = np.load(os.path.join(args.input_dir, "train_melspectro_labels.npy"))
 
-X_valid = np.load(os.path.join(args.input_dir, "valid_spectro.npy"))
-y_valid = np.load(os.path.join(args.input_dir, "valid_spectro_labels.npy"))
+X_valid = np.load(os.path.join(args.input_dir, "valid_melspectro.npy"))
+y_valid = np.load(os.path.join(args.input_dir, "valid_melspectro_labels.npy"))
 
 print(X_train.shape)
 print(X_valid.shape)

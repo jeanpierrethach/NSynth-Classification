@@ -23,7 +23,7 @@ def parse_args():
 						required=True,
 						help='Path of the model. (required)')
 	parser.add_argument('--normalize', action='store_true',
-                        help='Boolean flag activating normalization of the confusion matrix')
+                        help='Boolean flag activating normalization of the confusion matrix. (default: False)')
 
 	args = parser.parse_args()
 	maybe_make_directory(args.input_dir)
@@ -36,8 +36,8 @@ class_names = np.array(['bass', 'brass', 'flute', 'guitar',
 			 'keyboard', 'mallet', 'organ', 'reed', 
 			 'string', 'synth', 'vocal'])
 
-X_test = np.load(os.path.join(args.input_dir, "test_spectro.npy"))
-y_test = np.load(os.path.join(args.input_dir, "test_spectro_labels.npy"))
+X_test = np.load(os.path.join(args.input_dir, "test_melspectro.npy"))
+y_test = np.load(os.path.join(args.input_dir, "test_melspectro_labels.npy"))
 
 model = load_model(args.model_path)
 
