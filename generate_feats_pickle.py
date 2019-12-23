@@ -112,10 +112,10 @@ class NSynthFeatureExtractor(object):
 
     def dump(self, df_features):
         if self.temporal_averaging:
-            with open(os.path.join(args.output_dir, 'df_features_' + args.dataset + '.pickle'), 'wb') as f:
+            with open(os.path.join(args.output_dir, f'df_features_{args.dataset}.pickle'), 'wb') as f:
                 pickle.dump(df_features, f)
         else:
-            with open(os.path.join(args.output_dir, 'df_features_' + args.dataset + '_all_features.pickle'), 'wb') as f:
+            with open(os.path.join(args.output_dir, f'df_features_{args.dataset}_all_features.pickle'), 'wb') as f:
                 pickle.dump(df_features, f)
 
 
@@ -130,7 +130,7 @@ if args.dataset == "train" and args.sample:
 
 filenames_examples = df_examples_json.index.tolist()
 
-with open(os.path.join(args.output_dir, 'filenames_' + args.dataset + '.pickle'), 'wb') as f:
+with open(os.path.join(args.output_dir, f'filenames_{args.dataset}.pickle'), 'wb') as f:
     pickle.dump(filenames_examples, f)
 
 df_features = nsynthfe.extract(filenames_examples)

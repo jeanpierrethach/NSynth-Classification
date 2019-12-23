@@ -69,5 +69,5 @@ mel_spectrograms, labels = read_melspectrograms()
 X = np.array(mel_spectrograms)
 y = to_categorical(np.array(labels))
 
-np.save(os.path.join(args.output_dir, args.dataset + "_melspectro.npy"), X)
-np.save(os.path.join(args.output_dir, args.dataset + "_melspectro_labels.npy"), y)
+np.save(os.path.join(args.output_dir, f'{args.dataset}_melspectro.npy'), X)
+np.save(os.path.join(args.output_dir, f'{args.dataset}_melspectro_labels.npy'), y)

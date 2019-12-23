@@ -49,7 +49,7 @@ os.chdir("/mnt/d/IFT6390_NSynth_data")
 
 AUDIO_FILEPATH = "./audio/"
 
-DEFAULT_PATH = os.path.join(args.input.dir, 'filenames_' + args.dataset + '.pickle')
+DEFAULT_PATH = os.path.join(args.input.dir, f'filenames_{args.dataset}.pickle')
 
 with open(DEFAULT_PATH, 'wb') as f:
 	filenames_examples = pickle.load(f)
@@ -62,5 +62,5 @@ for idx, filename in enumerate(filenames_examples):
 						 y_axis='mel', fmax=args.fmax, x_axis='time')
 	plt.colorbar(format='%+2.0f dB')
 	plt.title("Mel spectrogram for " + class_file)
-	plt.savefig(os.path.join(args.output_dir, args.dataset, class_file + "_mel_spectro_" + str(idx) + '.png'), bbox_inches='tight', transparent=True, pad_inches=0)
+	plt.savefig(os.path.join(args.output_dir, args.dataset, f'{class_file}_mel_spectro_{str(idx)}.png'), bbox_inches='tight', transparent=True, pad_inches=0)
 	plt.close()	

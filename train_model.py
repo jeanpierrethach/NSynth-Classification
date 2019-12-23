@@ -102,12 +102,12 @@ history = model.fit(X_train, y_train,
 
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
-model_name = 'keras_nsynth_' + timestr + '.h5'
+model_name = f'keras_nsynth_{timestr}.h5'
 model_path = os.path.join(args.model_dir, model_name)
 model.save(model_path)
 print('Saved trained model at %s ' % model_path)
 
-write_metadata(os.path.join(args.model_dir, args.meta_name + '_' + timestr + '_.txt'), model_name, args)
+write_metadata(os.path.join(args.model_dir, f'{args.meta_name}_{timestr}.txt'), model_name, args)
 
 print(history.history.keys())
 
@@ -118,7 +118,7 @@ plt.title('Model accuracy')
 plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Valid'], loc='upper left')
-plt.savefig(os.path.join(args.graph_dir, 'model_accuracy_'+ timestr + '.png'))
+plt.savefig(os.path.join(args.graph_dir, f'model_accuracy_{timestr}.png'))
 plt.close()
 
 # Plot training & validation loss values
@@ -128,5 +128,5 @@ plt.title('Model loss')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Valid'], loc='upper left')
-plt.savefig(os.path.join(args.graph_dir, 'model_loss_ '+ timestr + '.png'))
+plt.savefig(os.path.join(args.graph_dir, f'model_loss_{timestr}.png'))
 plt.close()
