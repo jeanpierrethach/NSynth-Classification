@@ -43,7 +43,7 @@ def parse_args():
 
 args = parse_args()
 
-def load_image(filename, resize=False):
+def load_image(filename):
     img = Image.open(filename)
     img.load()
     if args.resize:
@@ -60,7 +60,7 @@ def read_melspectrograms():
     for im_path in glob.glob(melspec_path):
         if args.verbose:
             print(im_path)
-        im = load_image(im_path, resize=True)
+        im = load_image(im_path)
         mel_spectrograms.append(im)
         labels.append(instrument_code(im_path.split(os.sep)[3]))
     return mel_spectrograms, labels
