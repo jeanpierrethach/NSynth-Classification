@@ -67,6 +67,10 @@ def plot_confusion_matrix(y_true, y_pred, classes,
            ylabel='True label',
            xlabel='Predicted label')
 
+    # Note: Fix for matplotlib 3.1.1 https://github.com/matplotlib/matplotlib/issues/14675
+    bt, tp = ax.get_ylim()
+    ax.set_ylim(bt + 0.5, tp - 0.5)
+
     # Rotate the tick labels and set their alignment.
     plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
              rotation_mode="anchor")
